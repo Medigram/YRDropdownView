@@ -226,7 +226,9 @@ static YRDropdownView *currentDropdown = nil;
                               animated:(BOOL)animated
                              hideAfter:(float)delay
 {
+    BOOL previousExisted = NO;
     if (currentDropdown) {
+        previousExisted = YES;
         [currentDropdown hideUsingAnimation:[NSNumber numberWithBool:animated]];
     }
     
@@ -266,7 +268,13 @@ static YRDropdownView *currentDropdown = nil;
     }
     
     [view addSubview:dropdown];
-    [dropdown show:animated];
+    
+    if (previousExisted) {
+        [dropdown show:NO];
+    } else {
+        [dropdown show:animated];
+    }
+    
     if (delay != 0.0) {
         [dropdown performSelector:@selector(hideUsingAnimation:) withObject:[NSNumber numberWithBool:animated] afterDelay:delay+ANIMATION_DURATION];
     }
